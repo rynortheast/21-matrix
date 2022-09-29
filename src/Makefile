@@ -20,7 +20,7 @@ s21_matrix.a: $(OBJ_LIBRARY) $(HEADERS)
 	rm -rf ./*/*.o
 
 test: s21_matrix.a TESTS/SUITE_main.c
-	gcc $(CFLAGS) TESTS/SUITE_main.c s21_matrix.a -o test.out -lm -lcheck
+	gcc TESTS/SUITE_main.c s21_matrix.a -o test.out -lm -lcheck
 	./test.out
 
 gcov_report: s21_matrix.a TESTS/SUITE_main.c

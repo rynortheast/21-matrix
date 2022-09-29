@@ -1,6 +1,6 @@
 #include <check.h>
 
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 #define OK 0
 #define ERROR_INIT 1
@@ -1401,8 +1401,6 @@ START_TEST(s21_determinant_01) {
   double determ = 0.0;
   matrix_t A = {NULL, 0, 0};
 
-  printf("TEST: = %d\n", bad_matrix(&A));
-
   res = s21_determinant(&A, &determ);
   ck_assert_int_eq(res, ERROR_INIT);
   s21_remove_matrix(&A);
@@ -1790,96 +1788,95 @@ START_TEST(s21_inverse_matrix_06) {
 }
 END_TEST
 
-int main(void) {
-  int status = 0;
+int main() {
+  Suite *s1 = suite_create("Core");
+  TCase *tc_core = tcase_create("Core");
+  SRunner *sr = srunner_create(s1);
+  int nf;
+  suite_add_tcase(s1, tc_core);
 
-  Suite *core = suite_create("CORE");
-  TCase *case_main = tcase_create("CASE_main");
-  SRunner *runner = srunner_create(core);
-  suite_add_tcase(core, case_main);
+  tcase_add_test(tc_core, s21_create_matrix_01);
+  tcase_add_test(tc_core, s21_create_matrix_02);
+  tcase_add_test(tc_core, s21_create_matrix_03);
+  tcase_add_test(tc_core, s21_create_matrix_04);
+  tcase_add_test(tc_core, s21_create_matrix_05);
+  tcase_add_test(tc_core, s21_create_matrix_06);
+  tcase_add_test(tc_core, s21_create_matrix_07);
+  tcase_add_test(tc_core, s21_create_matrix_08);
+  tcase_add_test(tc_core, s21_create_matrix_09);
 
-  tcase_add_test(case_main, s21_create_matrix_01);
-  tcase_add_test(case_main, s21_create_matrix_02);
-  tcase_add_test(case_main, s21_create_matrix_03);
-  tcase_add_test(case_main, s21_create_matrix_04);
-  tcase_add_test(case_main, s21_create_matrix_05);
-  tcase_add_test(case_main, s21_create_matrix_06);
-  tcase_add_test(case_main, s21_create_matrix_07);
-  tcase_add_test(case_main, s21_create_matrix_08);
-  tcase_add_test(case_main, s21_create_matrix_09);
+  tcase_add_test(tc_core, s21_remove_matrix_01);
+  tcase_add_test(tc_core, s21_remove_matrix_02);
+  tcase_add_test(tc_core, s21_remove_matrix_03);
+  tcase_add_test(tc_core, s21_remove_matrix_04);
+  tcase_add_test(tc_core, s21_remove_matrix_05);
 
-  tcase_add_test(case_main, s21_remove_matrix_01);
-  tcase_add_test(case_main, s21_remove_matrix_02);
-  tcase_add_test(case_main, s21_remove_matrix_03);
-  tcase_add_test(case_main, s21_remove_matrix_04);
-  tcase_add_test(case_main, s21_remove_matrix_05);
+  tcase_add_test(tc_core, s21_eq_matrix_01);
+  tcase_add_test(tc_core, s21_eq_matrix_02);
+  tcase_add_test(tc_core, s21_eq_matrix_03);
+  tcase_add_test(tc_core, s21_eq_matrix_04);
+  tcase_add_test(tc_core, s21_eq_matrix_05);
+  tcase_add_test(tc_core, s21_eq_matrix_06);
 
-  tcase_add_test(case_main, s21_eq_matrix_01);
-  tcase_add_test(case_main, s21_eq_matrix_02);
-  tcase_add_test(case_main, s21_eq_matrix_03);
-  tcase_add_test(case_main, s21_eq_matrix_04);
-  tcase_add_test(case_main, s21_eq_matrix_05);
-  tcase_add_test(case_main, s21_eq_matrix_06);
+  tcase_add_test(tc_core, s21_sum_matrix_01);
+  tcase_add_test(tc_core, s21_sum_matrix_02);
+  tcase_add_test(tc_core, s21_sum_matrix_03);
+  tcase_add_test(tc_core, s21_sum_matrix_04);
+  tcase_add_test(tc_core, s21_sum_matrix_05);
+  tcase_add_test(tc_core, s21_sum_matrix_06);
+  tcase_add_test(tc_core, s21_sum_matrix_07);
+  tcase_add_test(tc_core, s21_sum_matrix_08);
 
-  tcase_add_test(case_main, s21_sum_matrix_01);
-  tcase_add_test(case_main, s21_sum_matrix_02);
-  tcase_add_test(case_main, s21_sum_matrix_03);
-  tcase_add_test(case_main, s21_sum_matrix_04);
-  tcase_add_test(case_main, s21_sum_matrix_05);
-  tcase_add_test(case_main, s21_sum_matrix_06);
-  tcase_add_test(case_main, s21_sum_matrix_07);
-  tcase_add_test(case_main, s21_sum_matrix_08);
+  tcase_add_test(tc_core, s21_sub_matrix_01);
+  tcase_add_test(tc_core, s21_sub_matrix_02);
+  tcase_add_test(tc_core, s21_sub_matrix_03);
+  tcase_add_test(tc_core, s21_sub_matrix_04);
+  tcase_add_test(tc_core, s21_sub_matrix_05);
+  tcase_add_test(tc_core, s21_sub_matrix_06);
+  tcase_add_test(tc_core, s21_sub_matrix_07);
+  tcase_add_test(tc_core, s21_sub_matrix_08);
 
-  tcase_add_test(case_main, s21_sub_matrix_01);
-  tcase_add_test(case_main, s21_sub_matrix_02);
-  tcase_add_test(case_main, s21_sub_matrix_03);
-  tcase_add_test(case_main, s21_sub_matrix_04);
-  tcase_add_test(case_main, s21_sub_matrix_05);
-  tcase_add_test(case_main, s21_sub_matrix_06);
-  tcase_add_test(case_main, s21_sub_matrix_07);
-  tcase_add_test(case_main, s21_sub_matrix_08);
+  tcase_add_test(tc_core, s21_mult_number_01);
+  tcase_add_test(tc_core, s21_mult_number_02);
+  tcase_add_test(tc_core, s21_mult_number_03);
+  tcase_add_test(tc_core, s21_mult_number_04);
+  tcase_add_test(tc_core, s21_mult_number_05);
+  tcase_add_test(tc_core, s21_mult_number_06);
 
-  tcase_add_test(case_main, s21_mult_number_01);
-  tcase_add_test(case_main, s21_mult_number_02);
-  tcase_add_test(case_main, s21_mult_number_03);
-  tcase_add_test(case_main, s21_mult_number_04);
-  tcase_add_test(case_main, s21_mult_number_05);
-  tcase_add_test(case_main, s21_mult_number_06);
+  tcase_add_test(tc_core, s21_mult_matrix_01);
+  tcase_add_test(tc_core, s21_mult_matrix_02);
+  tcase_add_test(tc_core, s21_mult_matrix_03);
+  tcase_add_test(tc_core, s21_mult_matrix_04);
+  tcase_add_test(tc_core, s21_mult_matrix_05);
+  tcase_add_test(tc_core, s21_mult_matrix_06);
+  tcase_add_test(tc_core, s21_mult_matrix_07);
 
-  tcase_add_test(case_main, s21_mult_matrix_01);
-  tcase_add_test(case_main, s21_mult_matrix_02);
-  tcase_add_test(case_main, s21_mult_matrix_03);
-  tcase_add_test(case_main, s21_mult_matrix_04);
-  tcase_add_test(case_main, s21_mult_matrix_05);
-  tcase_add_test(case_main, s21_mult_matrix_06);
-  tcase_add_test(case_main, s21_mult_matrix_07);
+  tcase_add_test(tc_core, s21_transpose_01);
+  tcase_add_test(tc_core, s21_transpose_02);
+  tcase_add_test(tc_core, s21_transpose_03);
 
-  tcase_add_test(case_main, s21_transpose_01);
-  tcase_add_test(case_main, s21_transpose_02);
-  tcase_add_test(case_main, s21_transpose_03);
+  tcase_add_test(tc_core, s21_determinant_01);
+  tcase_add_test(tc_core, s21_determinant_02);
+  tcase_add_test(tc_core, s21_determinant_03);
+  tcase_add_test(tc_core, s21_determinant_04);
+  tcase_add_test(tc_core, s21_determinant_05);
+  tcase_add_test(tc_core, s21_determinant_06);
 
-  tcase_add_test(case_main, s21_determinant_01);
-  tcase_add_test(case_main, s21_determinant_02);
-  tcase_add_test(case_main, s21_determinant_03);
-  tcase_add_test(case_main, s21_determinant_04);
-  tcase_add_test(case_main, s21_determinant_05);
-  tcase_add_test(case_main, s21_determinant_06);
+  tcase_add_test(tc_core, s21_calc_complements_01);
+  tcase_add_test(tc_core, s21_calc_complements_02);
+  tcase_add_test(tc_core, s21_calc_complements_03);
+  tcase_add_test(tc_core, s21_calc_complements_04);
 
-  tcase_add_test(case_main, s21_calc_complements_01);
-  tcase_add_test(case_main, s21_calc_complements_02);
-  tcase_add_test(case_main, s21_calc_complements_03);
-  tcase_add_test(case_main, s21_calc_complements_04);
+  tcase_add_test(tc_core, s21_inverse_matrix_01);
+  tcase_add_test(tc_core, s21_inverse_matrix_02);
+  tcase_add_test(tc_core, s21_inverse_matrix_03);
+  tcase_add_test(tc_core, s21_inverse_matrix_04);
+  tcase_add_test(tc_core, s21_inverse_matrix_05);
+  tcase_add_test(tc_core, s21_inverse_matrix_06);
 
-  tcase_add_test(case_main, s21_inverse_matrix_01);
-  tcase_add_test(case_main, s21_inverse_matrix_02);
-  tcase_add_test(case_main, s21_inverse_matrix_03);
-  tcase_add_test(case_main, s21_inverse_matrix_04);
-  tcase_add_test(case_main, s21_inverse_matrix_05);
-  tcase_add_test(case_main, s21_inverse_matrix_06);
+  srunner_run_all(sr, CK_ENV);
+  nf = srunner_ntests_failed(sr);
+  srunner_free(sr);
 
-  srunner_run_all(runner, CK_ENV);
-  status = srunner_ntests_failed(runner);
-  srunner_free(runner);
-
-  return status ? 1 : 0;
+  return nf ? 1 : 0;
 }

@@ -12,7 +12,7 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   int status = (s21_is_bad_matrix(A) || s21_is_bad_matrix(B));
 
   if (status == 0 && (status = A->columns != B->rows ? 2 : 0) == 0) {
-    if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0) {
+    if ((status = s21_create_matrix(A->rows, B->columns, result)) == 0) {
       for (int x = 0; x < A->rows; x += 1) {
         for (int y = 0; y < B->columns; y += 1) {
           for (int z = 0; z < B->rows; z += 1)
