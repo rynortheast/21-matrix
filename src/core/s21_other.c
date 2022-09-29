@@ -44,26 +44,6 @@ int s21_minor(matrix_t *A, int row, int col, matrix_t *result) {
   return status;
 }
 
-int calc_complements(matrix_t *A, matrix_t *result) {
-  int res = 0;
-  if (s21_create_matrix(A->rows, A->columns, result) == 0) {
-    matrix_t tmp;
-    s21_create_matrix(A->rows - 1, A->columns - 1, &tmp);
-    for (int i = 0; i < A->rows; i++) {
-      for (int j = 0; j < A->columns; j++) {
-        find_minor(i, j, A, &tmp);
-        double det = 0.0;
-        s21_determinant(&tmp, &det);
-        result->matrix[i][j] = pow(-1, i + j) * det;
-        s21_remove_matrix(&tmp);
-      }
-    }
-  } else {
-    res = 1;
-  }
-  return res;
-}
-
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
   int status = s21_is_bad_matrix(A);
 
