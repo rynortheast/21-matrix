@@ -1,7 +1,5 @@
 #include "../s21_matrix.h"
 
-//  TODO [s21_determinant] Отсутствует проверка, что s21_minor
-//  отработал правильно и создал result матрицу.
 int s21_determinant(matrix_t *A, double *result) {
   int status = s21_is_bad_matrix(A);
 
@@ -50,9 +48,8 @@ int s21_is_bad_eq_matrix(matrix_t *A, matrix_t *B) {
   int status = 1;
 
   if (s21_is_bad_matrix(A) == 0) {
-    if (s21_is_bad_matrix(B) == 0) {
+    if (s21_is_bad_matrix(B) == 0)
       status = (A->rows == B->rows && A->columns == B->columns) ? 0 : 2;
-    }
   }
 
   return status;
