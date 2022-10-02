@@ -1,5 +1,5 @@
 
-CFLAGS = -Wall -Wextra -Werror -pedantic -std=c11
+CFLAGS = -Wall -Wextra -Werror -pedantic -std=c11 -fsanitize=address -g
 GCOVFLAGS = -fprofile-arcs -ftest-coverage
 
 HEADERS = s21_matrix.h 
@@ -20,11 +20,15 @@ s21_matrix.a: $(OBJ_LIBRARY) $(HEADERS)
 	rm -rf ./*/*.o
 
 test: s21_matrix.a TESTS/SUITE_main.c
-	gcc $(CFLAGS) TESTS/SUITE_main.c s21_matrix.a -o test.out -lm -lcheck
+	gcc $(CFLAGS) TESTS/SUITE_main.c s21_matrix.a -o test.out -lm -lcheck -lsubunit
+	./test.out
+
+personal: s21_matrix.a TESTS/personal.c
+	gcc $(CFLAGS) TESTS/personal.c s21_matrix.a -o test.out -lm -lcheck -lsubunit
 	./test.out
 
 gcov_report: s21_matrix.a TESTS/SUITE_main.c
-	gcc $(GCOVFLAGS) TESTS/SUITE_main.c $(SOURCES_ALL) -o report.out -lm -lcheck
+	gcc $(GCOVFLAGS) TESTS/SUITE_main.c $(SOURCES_ALL) -o report.out -lm -lcheck -lsubunit
 	./report.out
 	gcov -f $(SOURCES_ALL)
 	lcov -t "gcov_report" -o Coverage_Report.info -c -d .

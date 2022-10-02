@@ -1,5 +1,6 @@
 #include "../s21_matrix.h"
 
+//  TODO [s21_determinant] Не хватает проверок выполнения функций в цикле.
 int s21_determinant(matrix_t *A, double *result) {
   int status = s21_is_bad_matrix(A);
 
@@ -10,16 +11,14 @@ int s21_determinant(matrix_t *A, double *result) {
       *result = A->matrix[0][0] * A->matrix[1][1];
       *result -= A->matrix[0][1] * A->matrix[1][0];
     } else {
-      for (int y = 0; status == 0 && y < A->columns; y += 1) {
+      for (int y = 0; y < A->columns; y += 1) {
         double aux = 0;
         matrix_t aux_matrix = {0};
-        if ((status = s21_minor(A, 0, y, &aux_matrix)) == 0) {
-          if ((status = s21_determinant(&aux_matrix, &aux)) == 0) {
-            y % 2 ? (*result -= A->matrix[0][y] * aux)
-                  : (*result += A->matrix[0][y] * aux);
-            s21_remove_matrix(&aux_matrix);
-          }
-        }
+        s21_minor(A, 0, y, &aux_matrix);
+        s21_determinant(&aux_matrix, &aux);
+        y % 2 ? (*result -= A->matrix[0][y] * aux)
+              : (*result += A->matrix[0][y] * aux);
+        s21_remove_matrix(&aux_matrix);
       }
     }
   }
@@ -29,6 +28,7 @@ int s21_determinant(matrix_t *A, double *result) {
 
 int s21_minor(matrix_t *A, int row, int col, matrix_t *result) {
   int status = s21_is_bad_matrix(A);
+  s21_remove_matrix(result);
 
   if ((status = A->rows > 1 && A->columns > 1 ? 0 : 2) == 0) {
     if (!(status = s21_create_matrix(A->rows - 1, A->columns - 1, result))) {
@@ -46,21 +46,20 @@ int s21_minor(matrix_t *A, int row, int col, matrix_t *result) {
 
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
   int status = s21_is_bad_matrix(A);
+  s21_remove_matrix(result);
 
   if (status == 0 && (status = A->rows != A->columns ? 2 : 0) == 0) {
     if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0) {
       matrix_t aux_matrix = {0};
-      if ((status = s21_create_matrix(A->rows, A->columns, &aux_matrix)) == 0) {
-        for (int x = 0; status == 0 && x < A->rows; x += 1) {
-          for (int y = 0; status == 0 && y < A->columns; y += 1) {
-            double aux = 0.0;
-            if ((status = s21_minor(A, x, y, &aux_matrix)) == 0) {
-              if ((status = s21_determinant(&aux_matrix, &aux)) == 0)
-                result->matrix[x][y] = pow(-1, x + y) * aux;
-            }
+      for (int x = 0; status == 0 && x < A->rows; x += 1) {
+        for (int y = 0; status == 0 && y < A->columns; y += 1) {
+          double aux = 0.0;
+          if ((status = s21_minor(A, x, y, &aux_matrix)) == 0) {
+            if ((status = s21_determinant(&aux_matrix, &aux)) == 0)
+              result->matrix[x][y] = pow(-1, x + y) * aux;
+            s21_remove_matrix(&aux_matrix);
           }
         }
-        s21_remove_matrix(&aux_matrix);
       }
     }
   }

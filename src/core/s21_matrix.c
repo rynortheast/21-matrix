@@ -21,7 +21,6 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
   return status;
 }
 
-//  TODO [s21_remove_matrix] Проверить на работоспособность.
 void s21_remove_matrix(matrix_t *A) {
   if (A->matrix) free(A->matrix);
   A->matrix = NULL;
