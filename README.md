@@ -33,9 +33,9 @@ Implementation of some functions for processing numerical matrices in C programm
 ## Usage
 
 1. Clone this repository via
-    - SSH `git@github.com:rynortheast/S21_string.git` or
-    - HTTPS `https://github.com/rynortheast/S21_string.git`
+    - SSH `git@github.com:rynortheast/21-matrix.git` or
+    - HTTPS `https://github.com/rynortheast/21-matrix.git`
 2. Change code base if necessary
 3. Run `make test` to build project and run main tests
 4. Run `make personal` to build project and run personal test
-5. Run `make s21_string.a` to build a static lib
+5. Run `make s21_matrix.a` to build a static lib
