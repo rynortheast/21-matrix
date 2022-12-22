@@ -1,20 +1,31 @@
 #include "../s21_matrix.h"
 
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
-  int status = 1;
+  int status = INCORRECT_MATRIX;
 
   if (rows > 0 && columns > 0) {
-    double **matrix =
-        calloc(rows * columns * sizeof(double) + rows * sizeof(double *), 1);
-
-    if (matrix != NULL) {
-      double *cell = (double *)(matrix + rows);
-      for (int index = 0; index < rows; index += 1)
-        matrix[index] = cell + columns * index;
+    if (result->matrix = (double **)calloc(rows, sizeof(double *))) {
       result->columns = columns;
-      result->matrix = matrix;
       result->rows = rows;
-      status = 0;
+
+      for (int x = 0; x < rows; x += 1) {
+        if (!(result->matrix[x] = (double *)calloc(columns, sizeof(double)))) {
+          for (int q = 0; q < x; q += 1) free(result->matrix[q]);
+          free(result->matrix);
+          status = ALLOC_FAIL;
+        }
+      }
+
+      if (status == INCORRECT_MATRIX) {
+        for (int x = 0; x < rows; x += 1) {
+          for (int y = 0; y < columns; y += 1) {
+            result->matrix[x][y] = 0;
+          }
+        }
+        status = OK;
+      }
+    } else {
+      status = ALLOC_FAIL;
     }
   }
 
@@ -22,8 +33,12 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
 }
 
 void s21_remove_matrix(matrix_t *A) {
-  if (A->matrix) free(A->matrix);
-  A->matrix = NULL;
-  A->columns = 0;
-  A->rows = 0;
+  if (A) {
+    for (int x = 0; x < A->rows; x += 1) {
+      free(A->matrix[x]);
+    }
+    free(A->matrix);
+    A->columns = 0;
+    A->rows = 0;
+  }
 }
