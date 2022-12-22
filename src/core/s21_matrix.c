@@ -4,7 +4,7 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
   int status = INCORRECT_MATRIX;
 
   if (rows > 0 && columns > 0) {
-    if (result->matrix = (double **)calloc(rows, sizeof(double *))) {
+    if ((result->matrix = (double **)calloc(rows, sizeof(double *)))) {
       result->columns = columns;
       result->rows = rows;
 
@@ -38,6 +38,7 @@ void s21_remove_matrix(matrix_t *A) {
       free(A->matrix[x]);
     }
     free(A->matrix);
+    A->matrix = NULL;
     A->columns = 0;
     A->rows = 0;
   }

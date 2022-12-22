@@ -18,13 +18,12 @@ int s21_transpose(matrix_t *A, matrix_t *result) {
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
-  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (s21_is_bad_matrix(A) == SUCCESS) return INCORRECT_MATRIX;
   if (A->columns != A->rows) return CALCULATION_ERROR;
 
   double det = 0;
   int status = s21_determinant(A, &det);
   if (fabs(det) < 1e-6 || status != OK) return CALCULATION_ERROR;
-
   matrix_t aux = {0}, aux_transpose = {0};
 
   s21_calc_complements(A, &aux);

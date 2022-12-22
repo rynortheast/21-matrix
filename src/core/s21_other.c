@@ -31,19 +31,19 @@ double calcDeterminant(matrix_t *A, int size) {
 }
 
 int s21_determinant(matrix_t *A, double *result) {
-  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (s21_is_bad_matrix(A) == SUCCESS) return INCORRECT_MATRIX;
   if (A->columns != A->rows) return CALCULATION_ERROR;
 
   if (A->rows == 1)
     *result = A->matrix[0][0];
   else
-    calcDeterminant(A, A->rows);
+    *result = calcDeterminant(A, A->rows);
 
   return OK;
 }
 
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
-  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (s21_is_bad_matrix(A) == SUCCESS) return INCORRECT_MATRIX;
   if (A->columns != A->rows) return CALCULATION_ERROR;
 
   s21_create_matrix(A->columns, A->rows, result);

@@ -1,21 +1,19 @@
 #include "../s21_matrix.h"
 
 int main() {
+  int res;
   matrix_t A = {0};
-  double result = 0;
+  matrix_t Z = {0};
 
-  for (int q = 0; q < 10; q += 1) {
-    s21_create_matrix(q, q, &A);
+  s21_create_matrix(1, 1, &A);
+  A.matrix[0][0] = 2;
 
-    for (int x = 0; x < q; x += 1)
-      for (int y = 0; x < q; x += 1) A.matrix[x][y] = 5;
+  res = s21_inverse_matrix(&A, &Z);
 
-    int u = s21_determinant(&A, &result);
+  s21_remove_matrix(&A);
+  s21_remove_matrix(&Z);
 
-    printf("TEST - %d - %d\n", q, u);
-
-    s21_remove_matrix(&A);
-  }
+  printf("RESULT = %d\n", res);
 
   return 0;
 }

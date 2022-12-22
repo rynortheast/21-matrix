@@ -1,11 +1,11 @@
 #include "../s21_matrix.h"
 
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
-  return simple_arithmetics(A, B, result, 1);
+  return simpleArithmetics(A, B, result, 1);
 }
 
 int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
-  return simple_arithmetics(A, B, result, 2);
+  return simpleArithmetics(A, B, result, 2);
 }
 
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {

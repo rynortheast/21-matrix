@@ -1695,9 +1695,12 @@ START_TEST(s21_inverse_matrix_02) {
 
   s21_create_matrix(1, 1, &A);
   A.matrix[0][0] = 2;
+
   res = s21_inverse_matrix(&A, &Z);
+
   ck_assert_int_eq(Z.matrix[0][0] == (1.0 / A.matrix[0][0]), 1);
   ck_assert_int_eq(res, OK);
+
   s21_remove_matrix(&A);
   s21_remove_matrix(&Z);
 }
