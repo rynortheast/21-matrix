@@ -42,45 +42,29 @@ int s21_determinant(matrix_t *A, double *result) {
   return OK;
 }
 
-int s21_minor(matrix_t *A, int row, int col, matrix_t *result) {
-  int status = s21_is_bad_matrix(A);
-  s21_remove_matrix(result);
-
-  if ((status = A->rows > 1 && A->columns > 1 ? 0 : 2) == 0) {
-    if (!(status = s21_create_matrix(A->rows - 1, A->columns - 1, result))) {
-      for (int x = 0; x < result->rows; x += 1) {
-        for (int y = 0; y < result->columns; y += 1) {
-          result->matrix[x][y] =
-              A->matrix[x + (x >= row ? 1 : 0)][y + (y >= col ? 1 : 0)];
-        }
-      }
-    }
-  }
-
-  return status;
-}
-
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
-  int status = s21_is_bad_matrix(A);
-  s21_remove_matrix(result);
+  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (A->columns != A->rows) return CALCULATION_ERROR;
 
-  if (status == 0 && (status = A->rows != A->columns ? 2 : 0) == 0) {
-    if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0) {
-      matrix_t aux_matrix = {0};
-      for (int x = 0; status == 0 && x < A->rows; x += 1) {
-        for (int y = 0; status == 0 && y < A->columns; y += 1) {
-          double aux = 0.0;
-          if ((status = s21_minor(A, x, y, &aux_matrix)) == 0) {
-            if ((status = s21_determinant(&aux_matrix, &aux)) == 0)
-              result->matrix[x][y] = pow(-1, x + y) * aux;
-            s21_remove_matrix(&aux_matrix);
-          }
-        }
+  s21_create_matrix(A->columns, A->rows, result);
+  if (A->rows != 1) {
+    matrix_t aux = {0};
+
+    s21_create_matrix(A->rows, A->rows, &aux);
+    for (int sign = 0, x = 0; x < A->rows; x += 1) {
+      for (int y = 0; y < A->columns; y += 1) {
+        calcMinor(A->matrix, aux.matrix, x, y, A->rows);
+        sign = ((x + y) % 2 == 0) ? 1 : (-1);
+        result->matrix[x][y] = sign * calcDeterminant(&aux, A->rows - 1);
       }
     }
+
+    s21_remove_matrix(&aux);
+  } else {
+    result->matrix[0][0] = 1;
   }
 
-  return status;
+  return OK;
 }
 
 int s21_is_bad_eq_matrix(matrix_t *A, matrix_t *B) {
