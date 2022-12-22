@@ -18,28 +18,26 @@ int s21_transpose(matrix_t *A, matrix_t *result) {
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
-  int status = s21_is_bad_matrix(A);
-  s21_remove_matrix(result);
+  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (A->columns != A->rows) return CALCULATION_ERROR;
 
-  if (!status) {
-    double aux = 0;
-    if ((status = s21_determinant(A, &aux)) == 0) {
-      if (!(status = A->rows != A->columns || fabs(aux) < 1e-7 ? 2 : 0)) {
-        if (A->rows == 1) {
-          if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0)
-            result->matrix[0][0] = 1.0 / A->matrix[0][0];
-        } else {
-          matrix_t aux_matrix_1 = {0};
-          matrix_t aux_matrix_2 = {0};
-          s21_transpose(A, &aux_matrix_1);
-          s21_calc_complements(&aux_matrix_1, &aux_matrix_2);
-          s21_mult_number(&aux_matrix_2, 1.0 / aux, result);
-          s21_remove_matrix(&aux_matrix_1);
-          s21_remove_matrix(&aux_matrix_2);
-        }
-      }
+  double det = 0;
+  int status = s21_determinant(A, &det);
+  if (fabs(det) < 1e-6 || status != OK) return CALCULATION_ERROR;
+
+  matrix_t aux = {0}, aux_transpose = {0};
+
+  s21_calc_complements(A, &aux);
+  s21_transpose(&aux, &aux_transpose);
+  s21_create_matrix(A->rows, A->rows, result);
+
+  for (int x = 0; x < A->rows; x += 1) {
+    for (int y = 0; y < A->rows; y += 1) {
+      result->matrix[x][y] = aux_transpose.matrix[x][y] / det;
     }
   }
 
-  return status;
+  s21_remove_matrix(&aux_transpose);
+  s21_remove_matrix(&aux);
+  return OK;
 }

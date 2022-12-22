@@ -22,7 +22,7 @@ double calcDeterminant(matrix_t *A, int size) {
 
   s21_create_matrix(size, size, &aux);
   for (int sign = 1, x = 0; x < size; x += 1, sign *= (-1)) {
-    calcMinor(A, 0, x, &aux);
+    calcMinor(A->matrix, aux.matrix, 0, x, size);
     result += sign * A->matrix[0][x] * calcDeterminant(&aux, size - 1);
   }
 

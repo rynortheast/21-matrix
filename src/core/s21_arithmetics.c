@@ -42,7 +42,7 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   return status;
 }
 
-int simple_arithmetics(matrix_t *A, matrix_t *B, matrix_t *result, int znak) {
+int simpleArithmetics(matrix_t *A, matrix_t *B, matrix_t *result, int znak) {
   int status = s21_is_bad_eq_matrix(A, B);
   s21_remove_matrix(result);
 
