@@ -1,29 +1,45 @@
 #include "../s21_matrix.h"
 
-//  TODO [s21_determinant] Не хватает проверок выполнения функций в цикле.
-int s21_determinant(matrix_t *A, double *result) {
-  int status = s21_is_bad_matrix(A);
-
-  if (status == 0 && (status = A->rows != A->columns ? 2 : 0) == 0) {
-    if (A->columns == 1) {
-      *result = A->matrix[0][0];
-    } else if (A->columns == 2) {
-      *result = A->matrix[0][0] * A->matrix[1][1];
-      *result -= A->matrix[0][1] * A->matrix[1][0];
-    } else {
-      for (int y = 0; y < A->columns; y += 1) {
-        double aux = 0;
-        matrix_t aux_matrix = {0};
-        s21_minor(A, 0, y, &aux_matrix);
-        s21_determinant(&aux_matrix, &aux);
-        y % 2 ? (*result -= A->matrix[0][y] * aux)
-              : (*result += A->matrix[0][y] * aux);
-        s21_remove_matrix(&aux_matrix);
+void calcMinor(double **A, double **aux, int skipRow, int skipCol, int size) {
+  for (int row = 0, x = 0; row < size; row += 1) {
+    for (int col = 0, y = 0; col < size; col += 1) {
+      if (row != skipRow && col != skipCol) {
+        aux[x][y++] = A[row][col];
+        if (y == size - 1) {
+          y = 0;
+          x++;
+        }
       }
     }
   }
+}
 
-  return status;
+double calcDeterminant(matrix_t *A, int size) {
+  if (size == 1) return A->matrix[0][0];
+
+  matrix_t aux = {0};
+  double result = 0;
+
+  s21_create_matrix(size, size, &aux);
+  for (int sign = 1, x = 0; x < size; x += 1, sign *= (-1)) {
+    calcMinor(A, 0, x, &aux);
+    result += sign * A->matrix[0][x] * calcDeterminant(&aux, size - 1);
+  }
+
+  s21_remove_matrix(&aux);
+  return result;
+}
+
+int s21_determinant(matrix_t *A, double *result) {
+  if (s21_is_bad_matrix(A) == FAILURE) return INCORRECT_MATRIX;
+  if (A->columns != A->rows) return CALCULATION_ERROR;
+
+  if (A->rows == 1)
+    *result = A->matrix[0][0];
+  else
+    calcDeterminant(A, A->rows);
+
+  return OK;
 }
 
 int s21_minor(matrix_t *A, int row, int col, matrix_t *result) {
