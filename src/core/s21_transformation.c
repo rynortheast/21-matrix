@@ -2,7 +2,6 @@
 
 int s21_transpose(matrix_t *A, matrix_t *result) {
   int status = s21_is_bad_matrix(A);
-  s21_remove_matrix(result);
 
   if (status == 0) {
     if ((status = s21_create_matrix(A->columns, A->rows, result)) == 0) {
