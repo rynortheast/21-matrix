@@ -10,7 +10,6 @@ int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 
 int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   int status = (s21_is_bad_matrix(A) || s21_is_bad_matrix(B));
-  s21_remove_matrix(result);
 
   if (status == 0 && (status = A->columns != B->rows ? 2 : 0) == 0) {
     if ((status = s21_create_matrix(A->rows, B->columns, result)) == 0) {
@@ -28,7 +27,6 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   int status = s21_is_bad_matrix(A);
-  s21_remove_matrix(result);
 
   if (status == 0) {
     if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0) {
@@ -44,7 +42,6 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
 
 int simpleArithmetics(matrix_t *A, matrix_t *B, matrix_t *result, int znak) {
   int status = s21_is_bad_eq_matrix(A, B);
-  s21_remove_matrix(result);
 
   if (status == 0) {
     if ((status = s21_create_matrix(A->rows, A->columns, result)) == 0) {
